@@ -15,9 +15,16 @@
         <div class="hand second-hand"></div>
       </div>
     </div>
+    <div>
+      <p id="text-clock">10:21:22</p>
+    </div>
 
 
   <style>
+    #text-clock{
+      font-size: 60px;
+      animation-timing-function: ease-in-out;
+    }
     html {
       background: #018DED url(https://unsplash.it/1500/1000?image=881&blur=5);
       background-size: cover;
@@ -30,9 +37,11 @@
       margin: 0;
       font-size: 2rem;
       display: flex;
+      flex-direction: column;
       flex: 1;
       min-height: 100vh;
       align-items: center;
+      justify-content: center;
     }
 
     .clock {
@@ -63,11 +72,39 @@
       background: black;
       position: absolute;
       top: 50%;
+      transform-origin: 100%;
+      animation-timing-function: ease-in-out;
+      transition: all 0.5s;
     }
 
   </style>
-
   <script>
+    const secondHand = document.querySelector('.second-hand');
+    const minuteHand = document.querySelector('.min-hand');
+    const hourHand = document.querySelector('.hour-hand');
+    const textClock = document.getElementById('text-clock');
+    const hand = document.querySelector('.hand');
+    function getNow(){
+      const now = new Date();
+      const seconds = now.getSeconds();
+      const secondsDegree =  ((seconds / 60) * 360) + 90;
+      secondHand.style.transform = `rotate(${secondsDegree}deg)`;
+      
+      const minutes = now.getMinutes();
+      const minutesDegree = ((minutes / 60) * 360) + 90;
+      minuteHand.style.transform = `rotate(${minutesDegree}deg)`;
+
+      const hours = now.getHours();
+      const hoursDegree = (((hours % 12) / 12) * 360) + 90 ;
+      hourHand.style.transform = `rotate(${hoursDegree}deg)`;
+
+      const formattedSeconds = seconds < 10 ? "0" + seconds : seconds;
+      const formattedMinutes = minutes < 10 ? "0" + minutes : minutes;
+
+      textClock.innerHTML = `${hours}:${formattedMinutes}:${formattedSeconds}`;
+      
+    }
+    setInterval(getNow, 1000);
 
 
   </script>
